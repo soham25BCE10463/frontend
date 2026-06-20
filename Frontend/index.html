@@ -1872,7 +1872,7 @@ class APIClient {
     };
     if (body) options.body = JSON.stringify(body);
 
-    try {
+   try {
       const response = await fetch(`${API_BASE_URL}${path}`, options);
       const data = await response.json();
       
@@ -1883,9 +1883,12 @@ class APIClient {
       return data;
     } catch (error) {
       console.error('API Request failed:', error);
+      
+      // 👇 ADD THIS EXACT LINE:
+      alert(`Debug Info:\nTrying to hit: ${API_BASE_URL}${path}\nResult: ${error.message}`);
+      
       throw error;
     }
-  }
 
   // AUTH
   static async register(email, password, fullName) {
