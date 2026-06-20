@@ -1860,7 +1860,7 @@ let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
 class APIClient {
   static async request(method, path, body = null) {
     const headers = {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     };
     if (authToken) {
       headers['Authorization'] = `Bearer ${authToken}`;
