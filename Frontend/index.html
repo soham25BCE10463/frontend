@@ -2558,12 +2558,13 @@ function setupInterviewSocket(interviewId) {
     return;
   }
   try {
-    const socket = io(`${BACKEND_URL}/interviews`, {
-      auth: {
-        token: authToken
-      },
-      reconnection: true
-    });
+       const socket = io(BACKEND_URL, {
+         path: '/api/v1/socket.io', // If your NestJS app uses standard routing proxies
+         auth: {
+           token: authToken
+         },
+         reconnection: true
+        });
 
     socket.on('connect', () => {
       console.log('Connected to interview room');
