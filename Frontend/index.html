@@ -1861,7 +1861,6 @@ class APIClient {
   static async request(method, path, body = null) {
     const headers = {
       'Content-Type': 'application/json',
-      'Bypass-Tunnel-Reminder': 'true'
     };
     if (authToken) {
       headers['Authorization'] = `Bearer ${authToken}`;
