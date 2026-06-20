@@ -2559,12 +2559,7 @@ function setupInterviewSocket(interviewId) {
   }
   try {
     const socket = io(`${BACKEND_URL}/interviews`, {
-      auth: {
-        token: authToken
-      },
-      extraHeaders: {
-        'Bypass-Tunnel-Reminder': 'true' // 👈 ADD THIS LINE EXACTLY HERE
-      },
+      auth: {token: authToken},
       reconnection: true
     });
 
