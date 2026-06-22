@@ -2222,7 +2222,7 @@ async function handleAuthSubmit() {
   btn.disabled = true;
   btn.textContent = isSignup ? 'Creating Account…' : 'Signing In…';
 
-  try {
+ try {
     let response;
     if (isSignup) {
       response = await APIClient.register(email, password, fullName);
@@ -2230,36 +2230,19 @@ async function handleAuthSubmit() {
       response = await APIClient.login(email, password);
     }
 
-    if (isSignup) {
-      if (response.message) {
-        hideAuth();
-        document.getElementById('landing-overlay').classList.remove('show');
-        document.body.insertAdjacentHTML('beforeend', `
-          <div id="verify-notice" style="position:fixed;inset:0;background:var(--bg1);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;padding:40px;text-align:center">
-            <div style="font-size:56px;margin-bottom:20px">📧</div>
-            <div style="font-size:24px;font-weight:800;margin-bottom:12px">Check your Gmail inbox!</div>
-            <div style="font-size:15px;color:var(--text2);max-width:400px;line-height:1.7">
-              We sent a verification link to <strong>${escHtml(response.email || '')}</strong>.<br>
-              Click the link in that email to activate your account, then come back here to log in.
-            </div>
-            <button class="btn btn-primary" style="margin-top:28px" onclick="document.getElementById('verify-notice').remove();showAuth('login')">
-              I've verified — Log In
-            </button>
-          </div>
-        `);
-        return;
-      }
-    } else {
-      authToken = response.accessToken || response.token || response.access_token;
-      currentUser = response.user || { email, fullName };
-      localStorage.setItem('authToken', authToken);
-      localStorage.setItem('currentUser', JSON.stringify(currentUser));
-      updateUserCard();
-      hideAuth();
-      hideLanding();
-      showPage('dashboard');
-      loadDashboardData();
-    }
+    // Both login and signup now return the auth token directly!
+    authToken = response.accessToken || response.token || response.access_token;
+    currentUser = response.user || { email, fullName };
+    
+    localStorage.setItem('authToken', authToken);
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    
+    updateUserCard();
+    hideAuth();
+    hideLanding();
+    showPage('dashboard');
+    loadDashboardData();
+
   } catch (error) {
     showAuthError('Auth failed: ' + error.message);
   } finally {
@@ -2267,7 +2250,6 @@ async function handleAuthSubmit() {
     updateAuthUI();
   }
 }
-
 async function handleResetPasswordSubmit() {
   clearAuthError();
   const newPassword = document.getElementById('auth-reset-password')?.value?.trim();
