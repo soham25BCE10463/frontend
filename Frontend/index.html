@@ -227,6 +227,7 @@ body{
   border:1px solid rgba(16,185,129,0.3);
   color:var(--green);
 }
+.btn-success:hover{background:rgba(16,185,129,0.24)}
 .btn-sm{padding:6px 13px;font-size:12px;border-radius:7px}
 .btn-lg{padding:13px 30px;font-size:15px;border-radius:11px}
 .btn-xl{padding:16px 38px;font-size:16px;border-radius:13px;font-weight:700}
@@ -883,7 +884,17 @@ body{
   border-radius:9px;padding:13px;
   font-family:'JetBrains Mono',monospace;font-size:12px;
   color:var(--green);min-height:66px;
-  margin-top:10px;line-height:1.6;white-space:pre;
+  margin-top:10px;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;
+}
+
+/* Voice Recording Pulse */
+@keyframes recording-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,.4); }
+  50% { box-shadow: 0 0 0 8px rgba(239,68,68,0); }
+}
+#voice-record-btn[style*="background: var(--red)"],
+#voice-record-btn[style*="background:var(--red)"] {
+  animation: recording-pulse 1.5s ease-in-out infinite;
 }
 
 /* ===== ANALYTICS ===== */
@@ -1262,7 +1273,7 @@ body{
     <!-- ============================================================ -->
     <!-- PAGE: INTERVIEW ROOM (full-screen)                           -->
     <!-- ============================================================ -->
-    <section class="page" id="page-interview-room" style="margin:-24px;padding:0">
+    <section class="page" id="page-interview-room" style="height:100vh;overflow:hidden;margin:0;padding:0">
       <div class="interview-room">
         <div class="room-header">
           <div class="ai-face" style="width:38px;height:38px;font-size:18px;border-width:2px;animation:none">🤖</div>
@@ -1323,15 +1334,19 @@ body{
             </div>
 
             <!-- Answer Input -->
-            <div style="display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--border)">
-              <textarea id="answer-input" class="form-textarea" placeholder="Type your answer here, then press Send…" style="flex:1;min-height:60px;font-size:13px" onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendInterviewAnswer();}"></textarea>
-              <button class="btn btn-primary" style="align-self:flex-end" onclick="sendInterviewAnswer()">Send</button>
+            <div style="display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--border);align-items:flex-end">
+              <textarea id="answer-input" class="form-textarea" placeholder="Type your answer here, or click 🎤 to speak…" style="flex:1;min-height:60px;font-size:13px" onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendInterviewAnswer();}"></textarea>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <button class="btn btn-primary" style="font-size:12px" onclick="sendInterviewAnswer()">Send</button>
+                <button class="btn btn-secondary" id="voice-record-btn" style="font-size:16px;padding:6px 10px;position:relative" onclick="toggleVoiceRecording()" title="Voice Input (Speech-to-Text)">🎤</button>
+              </div>
             </div>
 
             <!-- Controls -->
             <div class="room-controls">
               <div class="ctrl-btn ctrl-active" id="mic-btn" onclick="toggleMic()" title="Mute/Unmute">🎙️</div>
               <div class="ctrl-btn ctrl-muted" id="cam-btn" onclick="toggleCam()" title="Camera On/Off">📷</div>
+              <div class="ctrl-btn ctrl-active" id="tts-btn" onclick="toggleTTS()" title="Toggle AI Voice">🔊</div>
               <div class="ctrl-btn ctrl-end" onclick="endInterview()" title="End Interview">📞</div>
             </div>
           </div>
@@ -1367,7 +1382,7 @@ body{
     <!-- ============================================================ -->
     <!-- PAGE: CODING INTERVIEW (full-screen)                         -->
     <!-- ============================================================ -->
-    <section class="page" id="page-coding" style="margin:-24px;padding:0">
+    <section class="page" id="page-coding" style="height:100vh;overflow:hidden;margin:0;padding:0">
       <div class="coding-room">
         <div class="code-header">
           <span style="font-size:14px;font-weight:700">💻 Coding Interview · Google Round 3</span>
@@ -1389,11 +1404,11 @@ body{
         <div class="code-problem">
           <div>
             <div class="flex-center gap-10 mb-12">
-              <span class="section-title" style="font-size:15px;font-weight:800;margin:0">42. Trapping Rain Water</span>
-              <span class="difficulty-tag hard">Hard</span>
+              <span class="section-title" id="coding-problem-title" style="font-size:15px;font-weight:800;margin:0">Loading…</span>
+              <span class="difficulty-tag" id="coding-difficulty-tag">—</span>
             </div>
             <div id="coding-problem-description" style="font-size:12.5px;color:var(--text2);line-height:1.75;margin-bottom:14px">
-              Given <code style="background:var(--bg4);padding:1px 5px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11.5px">n</code> non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.
+              Select a coding question to begin.
             </div>
           </div>
 
@@ -1427,6 +1442,7 @@ body{
 
         <!-- Footer Controls -->
         <div class="code-footer">
+          <button class="btn btn-success btn-sm" onclick="runCode()">▶ Run Code</button>
           <button class="btn btn-primary btn-sm" onclick="submitCode()">Submit Solution</button>
           <button class="btn btn-secondary btn-sm" onclick="showHint()">💡 AI Hint</button>
           <div style="margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
@@ -1860,7 +1876,7 @@ body{
 /* ================================================================
    API CLIENT
 ================================================================ */
-const BACKEND_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+const BACKEND_URL = !window.location.hostname || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'http://localhost:4000'
   : 'https://soham1937-ai-mock-backend.hf.space'; // <-- Paste your localtunnel link here
 
@@ -1993,6 +2009,12 @@ class APIClient {
   static async submitCodingSolution(data) {
     return this.request('POST', '/coding/submit', data);
   }
+  static async evaluateCode(data) {
+    return this.request('POST', '/coding/evaluate', data);
+  }
+  static async textToSpeech(text, voice) {
+    return this.request('POST', '/avatar/tts', { text, voice });
+  }
 
   // RECORDINGS
   static async uploadRecording(interviewId, file) {
@@ -2054,6 +2076,10 @@ let codeTimerInterval = null;
 let micOn = true;
 let camOn = false;
 let aiSpeaking = true;
+let ttsEnabled = true;
+let currentAudio = null;
+let speechRecognition = null;
+let isRecording = false;
 let authMode = 'login';
 
 /* ================================================================
@@ -2096,11 +2122,13 @@ function showPage(id, skipHistory) {
     ma.style.marginLeft = '0';
     tb.style.display = 'none';
     ca.style.padding = '0';
+    ca.style.overflow = 'hidden';
   } else {
     sb.style.display = '';
     ma.style.marginLeft = window.innerWidth > 768 ? '240px' : '0';
     tb.style.display = '';
     ca.style.padding = '24px';
+    ca.style.overflow = '';
   }
 
   // Start timers
@@ -2428,6 +2456,168 @@ function toggleAIState() {
 }
 
 /* ================================================================
+   SPEECH-TO-TEXT (STT) — Browser Web Speech API
+================================================================ */
+function toggleVoiceRecording() {
+  if (isRecording) {
+    stopVoiceRecording();
+  } else {
+    startVoiceRecording();
+  }
+}
+
+function startVoiceRecording() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    alert('Speech recognition is not supported in this browser. Please use Chrome or Edge.');
+    return;
+  }
+
+  const btn = document.getElementById('voice-record-btn');
+  const recognition = new SpeechRecognition();
+  recognition.continuous = true;
+  recognition.interimResults = true;
+  recognition.lang = 'en-US';
+
+  let finalTranscript = '';
+
+  recognition.onresult = (event) => {
+    let interimTranscript = '';
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const transcript = event.results[i][0].transcript;
+      if (event.results[i].isFinal) {
+        finalTranscript += transcript + ' ';
+      } else {
+        interimTranscript += transcript;
+      }
+    }
+    // Update the answer input with recognized text
+    const input = document.getElementById('answer-input');
+    if (input) {
+      input.value = finalTranscript + interimTranscript;
+    }
+  };
+
+  recognition.onerror = (event) => {
+    console.error('Speech recognition error:', event.error);
+    stopVoiceRecording();
+    if (event.error === 'not-allowed') {
+      alert('Microphone access denied. Please allow microphone access for speech recognition.');
+    }
+  };
+
+  recognition.onend = () => {
+    if (isRecording) {
+      // Auto-restart if still recording (continuous mode can stop unexpectedly)
+      try { recognition.start(); } catch(e) { stopVoiceRecording(); }
+    }
+  };
+
+  try {
+    recognition.start();
+    speechRecognition = recognition;
+    isRecording = true;
+    if (btn) {
+      btn.style.background = 'var(--red)';
+      btn.style.color = '#fff';
+      btn.title = 'Stop Recording';
+      btn.innerHTML = '⏹';
+    }
+  } catch (e) {
+    console.error('Failed to start speech recognition:', e);
+  }
+}
+
+function stopVoiceRecording() {
+  const btn = document.getElementById('voice-record-btn');
+  if (speechRecognition) {
+    speechRecognition.stop();
+    speechRecognition = null;
+  }
+  isRecording = false;
+  if (btn) {
+    btn.style.background = '';
+    btn.style.color = '';
+    btn.title = 'Voice Input (Speech-to-Text)';
+    btn.innerHTML = '🎤';
+  }
+}
+
+/* ================================================================
+   TEXT-TO-SPEECH (TTS) — Audio Playback
+================================================================ */
+function playAudioBase64(base64Data) {
+  // Stop any currently playing audio
+  stopSpeaking();
+
+  try {
+    const audioBlob = base64ToBlob(base64Data, 'audio/mpeg');
+    const audioUrl = URL.createObjectURL(audioBlob);
+    const audio = new Audio(audioUrl);
+    currentAudio = audio;
+
+    // Show speaking wave animation
+    const wave = document.getElementById('speaking-wave');
+    const stateText = document.getElementById('ai-state-text');
+    if (wave) wave.style.display = 'flex';
+    if (stateText) stateText.textContent = '🔊 AI Speaking…';
+
+    audio.onended = () => {
+      currentAudio = null;
+      URL.revokeObjectURL(audioUrl);
+      if (wave) wave.style.display = 'none';
+      if (stateText) stateText.textContent = '🎙️ Your turn — type your answer';
+    };
+
+    audio.onerror = (e) => {
+      console.error('Audio playback error:', e);
+      currentAudio = null;
+      URL.revokeObjectURL(audioUrl);
+      if (wave) wave.style.display = 'none';
+    };
+
+    audio.play().catch(e => {
+      console.warn('Audio autoplay blocked:', e.message);
+      currentAudio = null;
+    });
+  } catch (e) {
+    console.error('Failed to play audio:', e);
+  }
+}
+
+function stopSpeaking() {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+    currentAudio = null;
+    const wave = document.getElementById('speaking-wave');
+    if (wave) wave.style.display = 'none';
+  }
+}
+
+function toggleTTS() {
+  ttsEnabled = !ttsEnabled;
+  const btn = document.getElementById('tts-btn');
+  if (btn) {
+    btn.textContent = ttsEnabled ? '🔊' : '🔇';
+    btn.classList.toggle('ctrl-active', ttsEnabled);
+    btn.classList.toggle('ctrl-muted', !ttsEnabled);
+  }
+  if (!ttsEnabled) {
+    stopSpeaking();
+  }
+}
+
+function base64ToBlob(base64, mimeType) {
+  const byteChars = atob(base64);
+  const byteNums = new Array(byteChars.length);
+  for (let i = 0; i < byteChars.length; i++) {
+    byteNums[i] = byteChars.charCodeAt(i);
+  }
+  return new Blob([new Uint8Array(byteNums)], { type: mimeType });
+}
+
+/* ================================================================
    CODING ROOM
 ================================================================ */
 async function submitCode() {
@@ -2446,7 +2636,7 @@ async function submitCode() {
     return;
   }
 
-  out.innerHTML = '<span style="color:var(--yellow)">⟳ Submitting your solution…</span>';
+  out.innerHTML = '<span style="color:var(--yellow)">⟳ Submitting your solution for AI evaluation…</span>';
 
   try {
     const submission = await APIClient.submitCodingSolution({
@@ -2455,13 +2645,64 @@ async function submitCode() {
       sourceCode: editor.value,
     });
 
-    out.innerHTML =
-      `<span style="color:var(--green)">✓ Submission saved</span>\n` +
-      `Submission ID: ${escHtml(submission.id)}\n` +
-      `Status: ${escHtml(submission.status)}\n\n` +
-      `<span style="color:var(--text3)">Your code has been queued for evaluation. Automated code execution and test results are not yet enabled on this backend — your submission is recorded for review.</span>`;
+    const results = submission.testResults || {};
+    const feedback = submission.aiFeedback || {};
+    let output = `<span style="color:${submission.status === 'ACCEPTED' ? 'var(--green)' : 'var(--red)'};font-weight:700">${submission.status === 'ACCEPTED' ? '✓ ACCEPTED' : '✗ ' + (submission.status || 'WRONG_ANSWER')}</span>\n`;
+    output += `Submission ID: ${escHtml(submission.id)}\n\n`;
+
+    if (Array.isArray(results.results)) {
+      results.results.forEach((r, i) => {
+        const icon = r.passed ? '<span style="color:var(--green)">✓</span>' : '<span style="color:var(--red)">✗</span>';
+        output += `${icon} Test ${i + 1}: Input ${JSON.stringify(r.input)} → Expected ${JSON.stringify(r.expected)}, Got ${escHtml(String(r.actual))}\n`;
+      });
+      output += `\n<span style="font-weight:700">Passed: ${results.passed || 0}/${results.total || 0}</span>\n`;
+    }
+
+    if (feedback.feedback) output += `\n<span style="color:var(--blue)">💡 Feedback:</span> ${escHtml(feedback.feedback)}\n`;
+    if (feedback.complexity) output += `<span style="color:var(--purple)">⏱ Complexity:</span> ${escHtml(feedback.complexity)}\n`;
+
+    out.innerHTML = output;
   } catch (error) {
     out.innerHTML = `<span style="color:var(--red)">✗ Submission failed: ${escHtml(error.message)}</span>`;
+  }
+}
+
+async function runCode() {
+  const out = document.getElementById('output-console');
+  const editor = document.getElementById('code-editor');
+  const langSelect = document.getElementById('code-language-select');
+  if (!out || !editor) return;
+
+  if (!currentCodingQuestion) {
+    out.innerHTML = '<span style="color:var(--orange)">No question loaded. Go to Dashboard and click "New Interview" then choose Coding Room.</span>';
+    return;
+  }
+
+  out.innerHTML = '<span style="color:var(--yellow)">⚙ Evaluating code with AI…</span>';
+
+  try {
+    const evaluation = await APIClient.evaluateCode({
+      questionId: currentCodingQuestion.id,
+      language: langSelect ? langSelect.value : 'python',
+      sourceCode: editor.value,
+    });
+
+    let output = `<span style="color:${evaluation.status === 'ACCEPTED' ? 'var(--green)' : 'var(--red)'};font-weight:700">${evaluation.status === 'ACCEPTED' ? '⚡ All Tests Passed!' : '⚠ ' + (evaluation.status || 'WRONG_ANSWER')}</span>\n\n`;
+
+    if (Array.isArray(evaluation.results)) {
+      evaluation.results.forEach((r, i) => {
+        const icon = r.passed ? '<span style="color:var(--green)">✓</span>' : '<span style="color:var(--red)">✗</span>';
+        output += `${icon} Test ${i + 1}: Input ${JSON.stringify(r.input)} → Expected ${JSON.stringify(r.expected)}, Got ${escHtml(String(r.actual))}\n`;
+      });
+      output += `\n<span style="font-weight:700">Passed: ${evaluation.passed || 0}/${evaluation.total || 0}</span>\n`;
+    }
+
+    if (evaluation.feedback) output += `\n<span style="color:var(--blue)">💡 Feedback:</span> ${escHtml(evaluation.feedback)}\n`;
+    if (evaluation.complexity) output += `<span style="color:var(--purple)">⏱ Complexity:</span> ${escHtml(evaluation.complexity)}\n`;
+
+    out.innerHTML = output;
+  } catch (error) {
+    out.innerHTML = `<span style="color:var(--red)">✗ Evaluation failed: ${escHtml(error.message)}</span>`;
   }
 }
 
@@ -2540,6 +2781,11 @@ function selOpt(el, group, multi) {
 async function startInterview() {
   if (!authToken) {
     showAuth('login');
+    return;
+  }
+
+  if (selectedOptions.type === 'Coding') {
+    startCodingInterview();
     return;
   }
 
@@ -2727,6 +2973,13 @@ function setupInterviewSocket(interviewId) {
 
     socket.on('voice.ack', (data) => {
       console.log('Voice chunk acknowledged');
+    });
+
+    // TTS audio from AI responses
+    socket.on('ai.audio', (data) => {
+      if (ttsEnabled && data.audioBase64) {
+        playAudioBase64(data.audioBase64);
+      }
     });
 
     socket.on('disconnect', () => {
@@ -2927,8 +3180,21 @@ async function initializeCodingRoom(questionSlug) {
     const question = await APIClient.getCodingQuestion(questionSlug);
     currentCodingQuestion = question;
 
-    const titleEl = document.querySelector('#page-coding .problem-title, #page-coding .section-title');
+    // Update title with ID
+    const titleEl = document.getElementById('coding-problem-title');
     if (titleEl) titleEl.textContent = question.title || 'Coding Problem';
+
+    // Update difficulty tag
+    const diffTag = document.getElementById('coding-difficulty-tag');
+    if (diffTag) {
+      const diff = (question.difficulty || 'MEDIUM').toUpperCase();
+      diffTag.textContent = diff.charAt(0) + diff.slice(1).toLowerCase();
+      diffTag.className = 'difficulty-tag ' + diff.toLowerCase();
+    }
+
+    // Update header title
+    const headerTitle = document.querySelector('#page-coding .code-header span');
+    if (headerTitle) headerTitle.textContent = `💻 Coding Interview · ${question.title}`;
 
     const descEl = document.getElementById('coding-problem-description');
     if (descEl) descEl.innerHTML = escHtml(question.description || '').replace(/\n/g, '<br>');
@@ -2944,7 +3210,7 @@ async function initializeCodingRoom(questionSlug) {
     }
 
     const out = document.getElementById('output-console');
-    if (out) out.textContent = 'Ready. Click Submit Solution to send your code for evaluation.';
+    if (out) out.textContent = 'Ready. Click ▶ Run Code to evaluate or Submit Solution to save.';
   } catch (error) {
     console.error('Failed to load coding question:', error);
   }
@@ -3675,7 +3941,17 @@ async function promoteUser(userId) {
    NAV CLICK HANDLERS (data-page attribute approach)
 ================================================================ */
 document.querySelectorAll('.nav-item[data-page]').forEach(item => {
-  item.addEventListener('click', () => showPage(item.dataset.page));
+  item.addEventListener('click', () => {
+    if (item.dataset.page === 'coding') {
+      if (!currentCodingQuestion) {
+        startCodingInterview();
+      } else {
+        showPage('coding');
+      }
+    } else {
+      showPage(item.dataset.page);
+    }
+  });
 });
 
 /* ================================================================
