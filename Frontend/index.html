@@ -2383,10 +2383,301 @@
     .sidebar-backdrop.show {
       display: block
     }
+
+    /* ===== BACKEND STATUS BANNER ===== */
+    .backend-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      padding: 10px 20px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(90deg, #f97316, #ef4444);
+      transform: translateY(-100%);
+      transition: transform .3s ease;
+    }
+
+    .backend-banner.show {
+      transform: translateY(0);
+    }
+
+    .backend-banner .banner-spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, .3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ===== HISTORY PAGE ===== */
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .history-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .history-item:hover {
+      background: var(--glass2);
+      border-color: var(--border2);
+      transform: translateY(-1px);
+    }
+
+    .history-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .history-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .history-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .history-meta {
+      font-size: 12px;
+      color: var(--text3);
+    }
+
+    .history-score {
+      font-weight: 700;
+      font-size: 18px;
+      padding: 4px 12px;
+      border-radius: 8px;
+      background: var(--glass2);
+      flex-shrink: 0;
+    }
+
+    /* ===== LEADERBOARD PAGE ===== */
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .leaderboard-table th {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--text3);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .leaderboard-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .leaderboard-table tr:hover td {
+      background: var(--glass);
+    }
+
+    .lb-rank {
+      font-weight: 800;
+      font-size: 16px;
+      width: 50px;
+    }
+
+    .lb-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .lb-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--grad1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .lb-medal { font-size: 20px; }
+
+    .lb-streak {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      background: rgba(249, 115, 22, .15);
+      color: var(--orange);
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* ===== GOOGLE OAUTH BUTTON ===== */
+    .google-btn {
+      width: 100%;
+      padding: 11px 16px;
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      background: var(--glass);
+      color: var(--text1);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all .2s;
+      font-family: inherit;
+    }
+
+    .google-btn:hover {
+      background: var(--glass2);
+      border-color: var(--border3);
+    }
+
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+      color: var(--text3);
+      font-size: 12px;
+    }
+
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ===== ENHANCED MOBILE (max-width: 480px) ===== */
+    @media(max-width:480px) {
+      .content-area {
+        padding: 14px !important;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px;
+      }
+
+      .hero-h1 {
+        font-size: 26px !important;
+      }
+
+      .hero-sub {
+        font-size: 14px !important;
+      }
+
+      .hero-btns {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .hero-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      .auth-card {
+        margin: 16px;
+        padding: 24px !important;
+      }
+
+      .page-title {
+        font-size: 20px;
+      }
+
+      .leaderboard-table th:nth-child(4),
+      .leaderboard-table td:nth-child(4),
+      .leaderboard-table th:nth-child(5),
+      .leaderboard-table td:nth-child(5) {
+        display: none;
+      }
+    }
+
+    /* ===== MOBILE INTERVIEW/CODING ROOM ===== */
+    @media(max-width:768px) {
+      .interview-container, .coding-room {
+        flex-direction: column !important;
+        height: auto !important;
+        min-height: 100vh;
+      }
+
+      .interview-container > div,
+      .coding-room > div {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      .prep-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      .history-item {
+        flex-wrap: wrap;
+      }
+
+      .history-score {
+        margin-left: auto;
+      }
+
+      .admin-activity-chart {
+        overflow-x: auto;
+      }
+    }
   </style>
 </head>
 
 <body>
+
+  <!-- BACKEND STATUS BANNER -->
+  <div class="backend-banner" id="backend-banner">
+    <span class="banner-spinner"></span>
+    Waking up the AI server... This may take 30-60 seconds on first load.
+  </div>
 
   <!-- MOBILE SIDEBAR TOGGLE -->
   <div class="mobile-toggle" id="mobile-toggle" onclick="toggleSidebar()">☰</div>
@@ -2419,6 +2710,12 @@
       </div>
       <div class="nav-item" data-page="analytics">
         <span class="ni">📈</span> Analytics
+      </div>
+      <div class="nav-item" data-page="history">
+        <span class="ni">📋</span> My Interviews
+      </div>
+      <div class="nav-item" data-page="leaderboard">
+        <span class="ni">🏆</span> Leaderboard
       </div>
       <div class="nav-item" data-page="recordings">
         <span class="ni">🎬</span> Recordings <span class="nav-badge" id="nav-recordings-badge"
@@ -2974,6 +3271,10 @@
               style="display:none">
               ⬇ Download PDF
             </button>
+            <button class="btn btn-secondary btn-sm" id="share-report-btn" onclick="shareReport()"
+              style="display:none">
+              📤 Share Report
+            </button>
             <button class="btn btn-primary btn-sm" onclick="showPage('setup')">🔄 New Interview</button>
           </div>
         </div>
@@ -3249,6 +3550,67 @@
       </section>
 
       <!-- ============================================================ -->
+      <!-- PAGE: INTERVIEW HISTORY                                       -->
+      <!-- ============================================================ -->
+      <section class="page" id="page-history">
+        <div class="flex-between mb-20" style="flex-wrap:wrap;gap:12px">
+          <div>
+            <div class="page-title">📋 My Interviews</div>
+            <div class="page-sub">Review your past interview sessions and scores</div>
+          </div>
+          <div class="flex gap-8">
+            <select id="history-filter" class="form-input" style="max-width:200px" onchange="filterHistory()">
+              <option value="all">All Types</option>
+              <option value="TECHNICAL">Technical</option>
+              <option value="HR">HR</option>
+              <option value="BEHAVIORAL">Behavioral</option>
+              <option value="SYSTEM_DESIGN">System Design</option>
+              <option value="CODING">Coding</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="showPage('setup')">+ New Interview</button>
+          </div>
+        </div>
+        <div id="history-list" class="history-list">
+          <div class="card" style="text-align:center;padding:40px 20px">
+            <div style="font-size:40px;margin-bottom:10px">📋</div>
+            <div style="font-weight:700;margin-bottom:6px">No interviews yet</div>
+            <div class="text-xs">Complete your first interview to see it here.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- PAGE: LEADERBOARD                                             -->
+      <!-- ============================================================ -->
+      <section class="page" id="page-leaderboard">
+        <div class="flex-between mb-20" style="flex-wrap:wrap;gap:12px">
+          <div>
+            <div class="page-title">🏆 Leaderboard</div>
+            <div class="page-sub">Top performers ranked by average interview score</div>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="loadLeaderboard()">🔄 Refresh</button>
+        </div>
+        <div class="card">
+          <div style="overflow-x:auto">
+            <table class="leaderboard-table" id="leaderboard-table">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>User</th>
+                  <th>Avg Score</th>
+                  <th>Interviews</th>
+                  <th>Streak</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboard-tbody">
+                <tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text3)">Loading leaderboard...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
       <!-- PAGE: ADMIN PANEL                                            -->
       <!-- ============================================================ -->
       <section class="page" id="page-admin">
@@ -3268,6 +3630,24 @@
             <div class="stat-label">Total Revenue</div>
             <div class="stat-value" id="admin-stat-revenue">—</div>
           </div>
+          <div class="stat-card sc-blue">
+            <div class="stat-label">Interviews Today</div>
+            <div class="stat-value" id="admin-stat-today">—</div>
+          </div>
+          <div class="stat-card sc-green">
+            <div class="stat-label">Live Now</div>
+            <div class="stat-value" id="admin-stat-live">—</div>
+          </div>
+          <div class="stat-card sc-purple">
+            <div class="stat-label">Avg Readiness</div>
+            <div class="stat-value" id="admin-stat-readiness">—</div>
+          </div>
+        </div>
+
+        <!-- Activity Chart -->
+        <div class="card mb-20">
+          <div class="section-title">7-Day Activity</div>
+          <div id="admin-activity-chart" class="admin-activity-chart" style="height:200px;display:flex;align-items:flex-end;gap:8px;padding:16px 0"></div>
         </div>
 
         <!-- User Table -->
@@ -3450,6 +3830,12 @@
       </div>
       <div class="auth-title" id="auth-title">Welcome back</div>
       <div class="auth-sub" id="auth-sub">Sign in to continue your interview prep journey</div>
+
+      <button class="google-btn" id="google-oauth-btn" onclick="window.location.href=BACKEND_URL+'/api/v1/auth/google'">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Continue with Google
+      </button>
+      <div class="auth-divider" id="auth-divider">or</div>
 
       <div id="auth-error"
         style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:10px 14px;font-size:13px;color:#ef4444;margin-bottom:12px;display:none">
@@ -3712,6 +4098,22 @@
       static async getSubscriptions() {
         return this.request('GET', '/admin/subscriptions');
       }
+      static async getAdminStats() {
+        return this.request('GET', '/admin/stats');
+      }
+
+      // LEADERBOARD
+      static async getLeaderboard() {
+        return this.request('GET', '/analytics/leaderboard');
+      }
+
+      // SHARE
+      static async shareInterview(interviewId) {
+        return this.request('POST', `/interviews/${interviewId}/share`);
+      }
+      static async getSharedReport(token) {
+        return this.request('GET', `/interviews/shared/${token}`);
+      }
     }
 
     /* ================================================================
@@ -3749,6 +4151,7 @@
         dashboard: 'Dashboard', setup: 'New Interview',
         'interview-room': 'Interview Room', coding: 'Coding Interview',
         resume: 'Resume Upload', analytics: 'Performance Report',
+        history: 'My Interviews', leaderboard: 'Leaderboard',
         recordings: 'Recordings', prep: 'Prep Hub',
         notifications: 'Notifications',
         profile: 'Profile Settings', admin: 'Admin Panel'
@@ -3782,6 +4185,10 @@
       else stopRoomTimer();
       if (id === 'coding') startCodeTimer();
       else stopCodeTimer();
+
+      // Page-specific data loading
+      if (id === 'history') loadHistoryPage();
+      if (id === 'leaderboard') loadLeaderboard();
 
       // Scroll to top
       const ca2 = document.getElementById('content-area');
@@ -3866,6 +4273,11 @@
       document.getElementById('auth-switch-link').style.display = isReset ? 'none' : '';
       const forgotLink = document.querySelector('.auth-card a[onclick*="handleForgotPassword"]');
       if (forgotLink) forgotLink.style.display = isReset ? 'none' : '';
+      // Hide Google OAuth button in reset mode
+      const googleBtn = document.getElementById('google-oauth-btn');
+      const authDivider = document.getElementById('auth-divider');
+      if (googleBtn) googleBtn.style.display = isReset ? 'none' : '';
+      if (authDivider) authDivider.style.display = isReset ? 'none' : '';
     }
 
     async function handleAuthSubmit() {
@@ -5032,6 +5444,22 @@
           return;
         }
 
+        // Show skeleton loading states (Feature 4)
+        const skeletonBar = '<div class="skeleton" style="height:24px;width:60px;margin:4px 0"></div>';
+        ['stat-total-interviews', 'stat-avg-score', 'stat-streak'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.innerHTML = skeletonBar;
+        });
+        const recentEl = document.getElementById('recent-list');
+        if (recentEl) {
+          recentEl.innerHTML = Array.from({ length: 3 }, () =>
+            `<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)">
+              <div class="skeleton" style="width:40px;height:40px;border-radius:10px"></div>
+              <div style="flex:1"><div class="skeleton" style="height:14px;width:70%;margin-bottom:6px"></div><div class="skeleton" style="height:12px;width:40%"></div></div>
+            </div>`
+          ).join('');
+        }
+
         // Load user data
         const user = await APIClient.getCurrentUser();
         currentUser = user;
@@ -5042,6 +5470,9 @@
         // Load interviews
         const interviewsRes = await APIClient.getInterviews();
         const interviews = Array.isArray(interviewsRes) ? interviewsRes : (interviewsRes.data || []);
+
+        // Cache for history page
+        _allInterviewsCache = interviews;
 
         populateDashboardRecent(interviews);
         populateRecordings(interviews);
@@ -5274,8 +5705,11 @@
 
     async function loadAnalyticsReport(interviewId) {
       if (!interviewId) return;
+      _currentAnalyticsInterviewId = interviewId;
       const contentEl = document.getElementById('analytics-content');
       const subtitleEl = document.getElementById('analytics-subtitle');
+      const shareBtn = document.getElementById('share-report-btn');
+      if (shareBtn) shareBtn.style.display = '';
       if (!contentEl) return;
 
       const interview = allInterviews.find(i => i.id === interviewId);
@@ -5651,6 +6085,9 @@
         console.error('Failed to load platform stats:', error);
       }
 
+      // Load detailed admin stats (Feature 10)
+      loadAdminStats();
+
       try {
         const users = await APIClient.request('GET', '/admin/users');
         if (!Array.isArray(users) || users.length === 0) {
@@ -5696,6 +6133,247 @@
     }
 
     /* ================================================================
+       BACKEND HEALTH CHECK (Feature 6)
+    ================================================================ */
+    let _backendReady = false;
+    async function checkBackendStatus() {
+      const banner = document.getElementById('backend-banner');
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 5000);
+        const res = await fetch(`${BACKEND_URL}/api/v1/ai/health`, { signal: controller.signal });
+        clearTimeout(timeout);
+        if (res.ok) {
+          _backendReady = true;
+          banner.classList.remove('show');
+          return;
+        }
+      } catch {}
+
+      // Backend not ready — show banner and retry
+      banner.classList.add('show');
+      setTimeout(async () => {
+        for (let i = 0; i < 20; i++) {
+          try {
+            const res = await fetch(`${BACKEND_URL}/api/v1/ai/health`);
+            if (res.ok) {
+              _backendReady = true;
+              banner.classList.remove('show');
+              return;
+            }
+          } catch {}
+          await new Promise(r => setTimeout(r, 3000));
+        }
+        banner.innerHTML = '⚠️ Backend server is unreachable. Some features may not work.';
+      }, 1000);
+    }
+
+    /* ================================================================
+       INTERVIEW HISTORY (Feature 2)
+    ================================================================ */
+    let _allInterviewsCache = [];
+
+    async function loadHistoryPage() {
+      const container = document.getElementById('history-list');
+      // Show skeletons
+      container.innerHTML = Array.from({ length: 5 }, () =>
+        `<div class="history-item"><div class="skeleton" style="width:44px;height:44px;border-radius:10px"></div><div style="flex:1"><div class="skeleton" style="height:14px;width:60%;margin-bottom:8px"></div><div class="skeleton" style="height:12px;width:40%"></div></div><div class="skeleton" style="width:50px;height:30px"></div></div>`
+      ).join('');
+
+      try {
+        if (_allInterviewsCache.length === 0) {
+          const res = await APIClient.getInterviews();
+          _allInterviewsCache = Array.isArray(res) ? res : (res.data || []);
+        }
+        renderHistoryList(_allInterviewsCache);
+      } catch (e) {
+        container.innerHTML = '<div class="card" style="text-align:center;padding:30px;color:var(--text3)">Failed to load interviews. Please try again.</div>';
+      }
+    }
+
+    function filterHistory() {
+      const filter = document.getElementById('history-filter').value;
+      const filtered = filter === 'all'
+        ? _allInterviewsCache
+        : _allInterviewsCache.filter(i => i.type === filter);
+      renderHistoryList(filtered);
+    }
+
+    function renderHistoryList(interviews) {
+      const container = document.getElementById('history-list');
+      if (!interviews.length) {
+        container.innerHTML = '<div class="card" style="text-align:center;padding:40px 20px"><div style="font-size:40px;margin-bottom:10px">📋</div><div style="font-weight:700;margin-bottom:6px">No interviews found</div><div class="text-xs">Complete an interview to see it here.</div></div>';
+        return;
+      }
+
+      const typeIcons = { HR: '💼', TECHNICAL: '💻', BEHAVIORAL: '🧠', SYSTEM_DESIGN: '🏗️', CODING: '⌨️', COMPANY_SPECIFIC: '🏢' };
+      const typeColors = { HR: 'rgba(79,142,247,.15)', TECHNICAL: 'rgba(139,92,246,.15)', BEHAVIORAL: 'rgba(16,185,129,.15)', SYSTEM_DESIGN: 'rgba(6,182,212,.15)', CODING: 'rgba(249,115,22,.15)', COMPANY_SPECIFIC: 'rgba(236,72,153,.15)' };
+      const statusColors = { COMPLETED: 'var(--green)', LIVE: 'var(--blue)', SCHEDULED: 'var(--text3)', CANCELED: 'var(--red)', FAILED: 'var(--red)' };
+
+      container.innerHTML = interviews.map(i => {
+        const score = i.report ? Math.round((i.report.communicationScore + i.report.technicalScore + i.report.confidenceScore + i.report.grammarScore + i.report.behavioralScore) / 5) : null;
+        const date = new Date(i.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        const duration = i.startedAt && i.endedAt ? Math.round((new Date(i.endedAt) - new Date(i.startedAt)) / 60000) + ' min' : '—';
+
+        return `<div class="history-item" onclick="openInterviewReport('${i.id}')">
+          <div class="history-icon" style="background:${typeColors[i.type] || 'var(--glass2)'}">${typeIcons[i.type] || '📝'}</div>
+          <div class="history-info">
+            <div class="history-title">${i.title}</div>
+            <div class="history-meta">${i.type} · ${i.difficulty} · ${date} · ${duration} · <span style="color:${statusColors[i.status] || 'var(--text3)'}">${i.status}</span></div>
+          </div>
+          ${score !== null ? `<div class="history-score" style="color:${score >= 70 ? 'var(--green)' : score >= 40 ? 'var(--orange)' : 'var(--red)'}">${score}%</div>` : '<div class="history-score" style="color:var(--text3)">—</div>'}
+        </div>`;
+      }).join('');
+    }
+
+    function openInterviewReport(interviewId) {
+      // Find the interview's select option and switch to analytics
+      const select = document.getElementById('analytics-interview-select');
+      if (select) {
+        const option = Array.from(select.options).find(o => o.value === interviewId);
+        if (option) {
+          select.value = interviewId;
+          showPage('analytics');
+          loadAnalyticsReport(interviewId);
+          return;
+        }
+      }
+      showPage('analytics');
+    }
+
+    /* ================================================================
+       LEADERBOARD (Feature 8)
+    ================================================================ */
+    async function loadLeaderboard() {
+      const tbody = document.getElementById('leaderboard-tbody');
+      tbody.innerHTML = Array.from({ length: 5 }, () =>
+        `<tr><td><div class="skeleton" style="height:20px;width:30px"></div></td><td><div class="skeleton" style="height:20px;width:150px"></div></td><td><div class="skeleton" style="height:20px;width:50px"></div></td><td><div class="skeleton" style="height:20px;width:40px"></div></td><td><div class="skeleton" style="height:20px;width:60px"></div></td></tr>`
+      ).join('');
+
+      try {
+        const data = await APIClient.getLeaderboard();
+        const leaderboard = Array.isArray(data) ? data : [];
+        if (leaderboard.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text3)">No leaderboard data yet. Complete interviews to appear here!</td></tr>';
+          return;
+        }
+
+        const medals = ['🥇', '🥈', '🥉'];
+        tbody.innerHTML = leaderboard.map((u, idx) => {
+          const initials = (u.name || '?').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+          return `<tr>
+            <td class="lb-rank">${idx < 3 ? `<span class="lb-medal">${medals[idx]}</span>` : idx + 1}</td>
+            <td><div class="lb-user"><div class="lb-avatar">${initials}</div><span>${u.name}</span></div></td>
+            <td style="font-weight:700;color:${u.avgScore >= 70 ? 'var(--green)' : u.avgScore >= 40 ? 'var(--orange)' : 'var(--red)'}">${u.avgScore}%</td>
+            <td>${u.totalInterviews}</td>
+            <td>${u.streak > 0 ? `<span class="lb-streak">🔥 ${u.streak}d</span>` : '—'}</td>
+          </tr>`;
+        }).join('');
+      } catch (e) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text3)">Failed to load leaderboard.</td></tr>';
+      }
+    }
+
+    /* ================================================================
+       SHARE REPORT (Feature 9)
+    ================================================================ */
+    let _currentAnalyticsInterviewId = null;
+
+    async function shareReport() {
+      if (!_currentAnalyticsInterviewId) return;
+      const btn = document.getElementById('share-report-btn');
+      const originalText = btn.textContent;
+      btn.textContent = '⏳ Generating...';
+      btn.disabled = true;
+
+      try {
+        const result = await APIClient.shareInterview(_currentAnalyticsInterviewId);
+        await navigator.clipboard.writeText(result.shareUrl);
+        btn.textContent = '✅ Link Copied!';
+        setTimeout(() => { btn.textContent = originalText; btn.disabled = false; }, 2500);
+      } catch (e) {
+        btn.textContent = '❌ Failed';
+        setTimeout(() => { btn.textContent = originalText; btn.disabled = false; }, 2000);
+      }
+    }
+
+    async function loadSharedReport(token) {
+      try {
+        const data = await APIClient.getSharedReport(token);
+        if (!data || !data.report) {
+          alert('Shared report not found or expired.');
+          return;
+        }
+        // Hide landing/auth overlays and show a minimal report view
+        document.getElementById('landing-overlay')?.classList.remove('show');
+        document.getElementById('auth-overlay')?.classList.remove('show');
+        showPage('analytics');
+
+        const r = data.report;
+        const scores = [r.communicationScore, r.technicalScore, r.confidenceScore, r.grammarScore, r.behavioralScore];
+        const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+
+        const content = document.getElementById('analytics-content');
+        content.innerHTML = `
+          <div class="card mb-20" style="text-align:center;padding:24px">
+            <div style="font-size:13px;color:var(--text3);margin-bottom:8px">Shared Report by ${data.userName}</div>
+            <div style="font-size:20px;font-weight:800;margin-bottom:4px">${data.title}</div>
+            <div class="text-xs">${data.type} · ${data.difficulty}${data.completedAt ? ' · ' + new Date(data.completedAt).toLocaleDateString() : ''}</div>
+          </div>
+          <div class="stats-grid mb-20">
+            <div class="stat-card sc-blue"><div class="stat-label">Communication</div><div class="stat-value">${r.communicationScore}%</div></div>
+            <div class="stat-card sc-purple"><div class="stat-label">Technical</div><div class="stat-value">${r.technicalScore}%</div></div>
+            <div class="stat-card sc-green"><div class="stat-label">Confidence</div><div class="stat-value">${r.confidenceScore}%</div></div>
+            <div class="stat-card sc-blue"><div class="stat-label">Grammar</div><div class="stat-value">${r.grammarScore}%</div></div>
+            <div class="stat-card sc-purple"><div class="stat-label">Behavioral</div><div class="stat-value">${r.behavioralScore}%</div></div>
+            <div class="stat-card sc-green"><div class="stat-label">Overall</div><div class="stat-value">${avg}%</div></div>
+          </div>
+          <div class="card mb-20"><div class="section-title">💪 Strengths</div>${(r.strengths || []).map(s => `<div style="padding:6px 0;font-size:14px">✅ ${s}</div>`).join('') || '<div class="text-xs" style="color:var(--text3)">No strengths data</div>'}</div>
+          <div class="card mb-20"><div class="section-title">📉 Areas to Improve</div>${(r.weaknesses || []).map(w => `<div style="padding:6px 0;font-size:14px">⚠️ ${w}</div>`).join('') || '<div class="text-xs" style="color:var(--text3)">No weaknesses data</div>'}</div>
+          <div class="card"><div class="section-title">💡 Suggestions</div>${(r.suggestions || []).map(s => `<div style="padding:6px 0;font-size:14px">💡 ${s}</div>`).join('') || '<div class="text-xs" style="color:var(--text3)">No suggestions data</div>'}</div>
+        `;
+
+        const subtitle = document.getElementById('analytics-subtitle');
+        if (subtitle) subtitle.textContent = `Shared report for ${data.userName}`;
+      } catch (e) {
+        console.error('Failed to load shared report:', e);
+        alert('Failed to load shared report.');
+      }
+    }
+
+    /* ================================================================
+       ADMIN STATS (Feature 10)
+    ================================================================ */
+    async function loadAdminStats() {
+      try {
+        const stats = await APIClient.getAdminStats();
+        const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+        set('admin-stat-users', stats.totalUsers);
+        set('admin-stat-interviews', stats.totalInterviews);
+        set('admin-stat-today', stats.interviewsToday);
+        set('admin-stat-live', stats.liveInterviews);
+        set('admin-stat-readiness', stats.avgReadinessScore + '%');
+
+        // Render activity chart
+        const chartEl = document.getElementById('admin-activity-chart');
+        if (chartEl && stats.dailyActivity) {
+          const maxVal = Math.max(...stats.dailyActivity.map(d => d.interviews + d.users), 1);
+          chartEl.innerHTML = stats.dailyActivity.map(d => {
+            const h = Math.max(((d.interviews + d.users) / maxVal) * 160, 8);
+            const dayName = new Date(d.date).toLocaleDateString('en-US', { weekday: 'short' });
+            return `<div style="flex:1;text-align:center">
+              <div style="height:${h}px;background:var(--grad1);border-radius:6px 6px 0 0;margin:0 2px;transition:height .3s" title="${d.interviews} interviews, ${d.users} signups"></div>
+              <div style="font-size:11px;color:var(--text3);margin-top:6px">${dayName}</div>
+              <div style="font-size:10px;color:var(--text3)">${d.interviews}i / ${d.users}u</div>
+            </div>`;
+          }).join('');
+        }
+      } catch (e) {
+        console.error('Failed to load admin stats:', e);
+      }
+    }
+
+    /* ================================================================
        NAV CLICK HANDLERS (data-page attribute approach)
     ================================================================ */
     document.querySelectorAll('.nav-item[data-page]').forEach(item => {
@@ -5719,6 +6397,52 @@
       const urlParams = new URLSearchParams(window.location.search);
       const verifyToken = urlParams.get('verify');
       const resetToken = urlParams.get('reset');
+      const oauthPayload = urlParams.get('oauth');
+      const oauthError = urlParams.get('oauth_error');
+      const sharedReportToken = urlParams.get('report');
+
+      // Handle Google OAuth redirect
+      if (oauthPayload) {
+        try {
+          const tokens = JSON.parse(atob(decodeURIComponent(oauthPayload)));
+          authToken = tokens.accessToken;
+          localStorage.setItem('authToken', tokens.accessToken);
+          if (tokens.refreshToken) localStorage.setItem('refreshToken', tokens.refreshToken);
+          if (tokens.user) {
+            currentUser = tokens.user;
+            localStorage.setItem('currentUser', JSON.stringify(tokens.user));
+          }
+          window.history.replaceState({}, '', window.location.pathname);
+          updateUserCard();
+          document.getElementById('landing-overlay')?.classList.remove('show');
+          document.getElementById('auth-overlay')?.classList.remove('show');
+          loadDashboardData();
+          showPage('dashboard');
+          // Fetch fresh user data
+          APIClient.getCurrentUser().then(u => {
+            currentUser = u;
+            localStorage.setItem('currentUser', JSON.stringify(u));
+            updateUserCard();
+          }).catch(() => {});
+          return;
+        } catch (e) {
+          console.error('OAuth parse error:', e);
+        }
+      }
+
+      if (oauthError) {
+        window.history.replaceState({}, '', window.location.pathname);
+        showAuth('login');
+        showAuthError(decodeURIComponent(oauthError));
+        return;
+      }
+
+      // Handle shared report URL
+      if (sharedReportToken) {
+        window.history.replaceState({}, '', window.location.pathname);
+        loadSharedReport(sharedReportToken);
+        return;
+      }
 
       if (verifyToken) {
         fetch(`${API_BASE_URL}/auth/email/verify`, {
@@ -5773,6 +6497,9 @@
         // Show landing page
         document.getElementById('landing-overlay').classList.add('show');
       }
+
+      // Check backend health on load (Feature 6)
+      checkBackendStatus();
     });
   </script>
 </body>
